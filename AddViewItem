@@ -1,0 +1,188 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import javax.swing.*; 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+public class AddItem extends JFrame{
+	
+JTextArea itemTextArea 					= new JTextArea();
+JLabel itemNameLabel 					= new JLabel("Item Name");
+JTextField itemNameTextField 			= new JTextField(10);
+JLabel itemTypeLabel 					= new JLabel("Item Type");
+JTextField itemTypeTextField 			= new JTextField(10);
+JButton addButton 						= new JButton("Add");
+JButton menuButton						= new JButton("Menu");
+JButton removeButton 					= new JButton("Remove");
+JButton taxButton						= new JButton("Calculate Tax");
+JButton exitButton 						= new JButton("Exit");
+JLabel idLabel 							= new JLabel("ID");
+JTextField idTextField					= new JTextField(10);
+JLabel dateSpinnerLabel					= new JLabel("Expiration Date");
+JLabel quantityLabel					= new JLabel("Quantity");
+JTextField quantityTextField			= new JTextField(10);
+JTextField expirationDateTextField 		= new JTextField(10);
+int luxuryQuantity = 0;
+int essentialQuantity = 0;
+int giftQuantity = 0;
+
+
+
+
+
+public static LinkedList<Items> itemLinkedList = new LinkedList<Items>();
+
+public AddItem(){
+
+	JPanel flow1Panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	JPanel flow2Panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	//JPanel flow3Panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	JPanel gridPanel = new JPanel(new GridLayout(2, 1));
+	gridPanel.add(flow1Panel);
+	flow1Panel.add(itemNameLabel);
+	flow1Panel.add(itemNameTextField);
+	flow1Panel.add(itemTypeLabel);
+	flow1Panel.add(itemTypeTextField);
+	flow1Panel.add(idLabel);
+	flow1Panel.add(idTextField);
+	flow1Panel.add(dateSpinnerLabel);
+	flow1Panel.add(expirationDateTextField);
+	flow1Panel.add(quantityLabel);
+	flow1Panel.add(quantityTextField);
+	flow2Panel.add(addButton);
+	flow2Panel.add(taxButton);
+	flow2Panel.add(menuButton);
+	flow2Panel.add(removeButton);
+	flow2Panel.add(exitButton);
+	gridPanel.add(flow2Panel);
+	//gridPanel.add(flow3Panel);
+	add(gridPanel, BorderLayout.SOUTH);
+	add(itemTextArea, BorderLayout.CENTER);
+	itemTextArea.setEditable(false);
+	
+	addButton.addActionListener(event -> addItem());
+	removeButton.addActionListener(event -> removeItem());
+	exitButton.addActionListener(event -> exitApplication());
+	menuButton.addActionListener(event -> menuApplication());
+	
+}
+
+private boolean isItemInLinkedList(String idString) {
+	
+boolean isIDUnique = true;
+	
+	for(Items item : itemLinkedList) {
+		if(item.getId().compareTo ( idString) == 0) {
+			isIDUnique = false;
+		}
+	}
+	return isIDUnique;
+}
+
+private void addItem() {
+	
+	if(isItemInLinkedList(idTextField.getText()) == false) {
+		JOptionPane.showMessageDialog(null, "Error. ID already entered");
+	}
+	else
+	{
+		itemLinkedList.add(new Items(itemNameTextField.getText(), itemTypeTextField.getText(), idTextField.getText(), expirationDateTextField.getText(), quantityTextField.getText()));
+		itemTextArea.setText("");
+		for(Items item:itemLinkedList) {
+			if(itemTypeTextField.getText().equals("Luxury")) {
+			itemTextArea.append(item + "\n");
+		}
+			else if(itemTypeTextField.getText().equals("Essential")) {
+			itemTextArea.append(item + "\n");
+		}
+
+			else if(itemTypeTextField.getText().equals("Gift")) {
+			itemTextArea.append(item + "\n");
+		}
+			else {
+				JOptionPane.showMessageDialog(null, "Error, must enter Luxury, Essential, or Gift");
+			}
+			
+	}
+	}
+	 
+
+
+taxButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    	
+    	if(itemTypeTextField.getText().equals("Luxury")) {
+    		int luxury = 50;
+    		double totalTax = luxury * luxuryQuantity;
+    		double luxuryQuantity = Double.parseDouble(quantityTextField.getText());
+    		double finalTax = totalTax * 0.2;
+    		JOptionPane.showInputDialog(finalTax, "Total cost of luxury item");
+    	}
+    	else if(itemTypeTextField.getText().equals("Essential")) {
+    		int essential = 30;
+    		double totalTax = essential * 0.1;
+    		double essentialQuantity = Double.parseDouble(quantityTextField.getText());
+    		double finalTax = totalTax * essentialQuantity;
+    		JOptionPane.showInputDialog(finalTax, "Total cost of essential item");
+    	
+    	}
+    	else if(itemTypeTextField.getText().equals("Gift")) {
+    		int gift = 20;
+    		double totalTax = gift * 0.05;
+    		double giftQuantity = Double.parseDouble(quantityTextField.getText());
+    		double finalTax = totalTax * giftQuantity;
+    		JOptionPane.showInputDialog(finalTax, "Total cost of gift item");
+    	
+    	}
+    }
+    	
+    });
+}
+
+private void removeItem() {
+	if(isItemInLinkedList(itemNameTextField.getText()) == false) {
+		JOptionPane.showMessageDialog(null, "Erron Item not in database");
+	}
+	else {
+		for(int i = 0; i < itemLinkedList.size(); i++) {
+			String currItemName = itemLinkedList.get(i).getItemName();
+			if(currItemName.compareToIgnoreCase(itemNameTextField.getText()) == 0) {
+				itemLinkedList.remove(i);
+			}
+		}
+		itemTextArea.setText("");
+		for(Items item: itemLinkedList) {
+			itemTextArea.append(item + "\n");
+		}
+	}
+	
+
+
+
+}
+    
+
+private void menuApplication() {
+	
+}
+
+private void exitApplication() {
+	System.exit(0);
+}
+
+
+public static void main(String[] args) {
+	AddItem addItem = new AddItem();
+	addItem.setVisible(true);
+	addItem.setSize(1000, 1000);
+	addItem.setLocation(200, 100);
+	addItem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+}
+
+}
