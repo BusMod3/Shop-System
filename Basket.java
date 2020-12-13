@@ -1,5 +1,3 @@
-package groupAssignment;
-
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -32,12 +30,14 @@ public class Basket extends JFrame implements ActionListener {
 	private JPanel parentPanel = new JPanel(new MigLayout());
 	JPanel basketPanel = new JPanel(new MigLayout());
 	JButton add = new JButton("Add");
+	JButton showBasket = new JButton("Show Basket Contents");
 	JComboBox goods = new JComboBox(exampleItems);
 	JComboBox quantity = new JComboBox(exampleQuantity);
-	JTextField question = new JTextField("Enter the name of the product here");
-	JTextField types = new JTextField(6);
+	JLabel question = new JLabel("Enter the name of the product here");
+	JTextField types = new JTextField();
 	JButton clear = new JButton("Clear");
-
+	JTextArea basketDesc = new JTextArea(50, 200);
+	
 	public Basket() {
 
 		parentPanel.add(basketPanel);
@@ -50,14 +50,19 @@ public class Basket extends JFrame implements ActionListener {
 		basketPanel.add(question);
 		basketPanel.add(types);
 		basketPanel.add(goods);
-		basketPanel.add(quantity);
+		basketPanel.add(quantity, "wrap");
 		basketPanel.add(add);
 		basketPanel.add(clear);
-		question.setEditable(false);
+		basketPanel.add(showBasket, "wrap");
+		basketPanel.add(basketDesc);
+		basketDesc.setEditable(false);
+		basketDesc.setVisible(false);
 		add.addActionListener(this);
 		goods.addActionListener(this);
 		quantity.addActionListener(this);
 		clear.addActionListener(this);
+		showBasket.addActionListener(this);
+		
 
 	}
 
@@ -75,20 +80,25 @@ public class Basket extends JFrame implements ActionListener {
 			} else if (type.equals("Gift")) {
 				price = 20;
 			}
-			basket.add(new BasketList(type,product, price, quantity));// adds what ever is selected to basket linked list
-//			for(int i = 0;i<basket.size();  i++) {
-//				total = total + basket.get(i).getPrice() * basket.get(i).getQuantity() ;
-//
-//			}
-
-			
+		basket.add(new BasketList(type, product, price, quantity));// adds what ever is selected to basket linked list
+				
 		}
 		
 		if (e.getSource()==clear) {
 			goods.setSelectedIndex(0);
 			quantity.setSelectedIndex(0);
 		}
-
+		
+		if (e.getSource()== showBasket){
+			basketDesc.setVisible(true);
+			basketDesc.setText("");
+			total=0;
+			for (int i = 0; i < basket.size(); i++) {
+				total = total + basket.get(i).getPrice() * basket.get(i).getQuantity() ;
+				basketDesc.append("Product Name: " + basket.get(i).getProduct() + "     Quantity: " + basket.get(i).getQuantity()+ "         Price: " + basket.get(i).getPrice()+"\n");
+			}
+			basketDesc.append("Basket total: " + total +"\n");
+	}	
 	}
 
 	public static void main(String[] args) {
