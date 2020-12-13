@@ -1,0 +1,66 @@
+public class Items {
+private String itemName;
+private String itemType;
+private int taxAmount;
+private String id;
+private String expirationDate;
+private String quantity;
+
+public Items(){
+	itemName = "";
+	itemType = "";
+	//taxAmount = 0;
+	id = "";
+	expirationDate = "";
+	quantity = "";
+}
+public Items(String itemName, String itemType, String id, String expirationDate, String quantity) {
+	this.itemName = itemName;
+	this.itemType = itemType;
+	//this.taxAmount = taxAmount;
+	this.id = id;
+	this.expirationDate = expirationDate;
+	this.quantity = quantity;
+}
+public String getQuantity() {
+	return quantity;
+}
+public void setQuantity(String quantity) {
+	this.quantity = quantity;
+}
+public String getExpirationDate() {
+	return expirationDate;
+}
+public void setExpirationDate(String expirationDate) {
+	this.expirationDate = expirationDate;
+}
+public String getItemName() {
+	return itemName;
+}
+public void setItemName(String itemName) {
+	this.itemName = itemName;
+}
+public String getItemType() {
+	return itemType;
+}
+public void setItemType(String itemType) {
+	this.itemType = itemType;
+}
+public int getTaxAmount() {
+	return taxAmount;
+}
+public void setTaxAmount(int taxAmount) {
+	this.taxAmount = taxAmount;
+}
+public String getId() {
+	return id;
+}
+public void setId(String id) {
+	this.id = id;
+}
+@Override
+public String toString() {
+	return itemName + "\t" + itemType + "\t" + id + "\t" + expirationDate + "\t" + quantity;
+}
+
+}
