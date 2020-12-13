@@ -1,3 +1,5 @@
+
+
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -36,7 +38,8 @@ public class Box extends JFrame implements ActionListener {
 	JTextField questionOne = new JTextField("What is the box weight, width, height and depth");
 	JTextField questionTwo = new JTextField("How many items are there");
 	JTextField questionThree = new JTextField("What is the item weight, width, height and depth");
-	
+	JLabel boxNeeded = new JLabel("");
+	JButton calcBox = new JButton("Calculate Boxes Needed");
 
 	
 	public Box() {
@@ -58,18 +61,38 @@ public class Box extends JFrame implements ActionListener {
 		boxPanel.add(itemWeight);
 		boxPanel.add(itemWidth);
 		boxPanel.add(itemHeight);
-		boxPanel.add(itemDepth);
+		boxPanel.add(itemDepth, "wrap");
+		boxPanel.add(calcBox, "wrap");
+		boxPanel.add(boxNeeded);
+		boxNeeded.setVisible(false);
 		questionOne.setEditable(false);
 		questionTwo.setEditable(false);
 		questionThree.setEditable(false);
-		
-
+		calcBox.addActionListener(this);
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		if (e.getSource() == calcBox) {
+		boxNeeded.setVisible(true);
+		int boxW = Integer.parseInt(boxWidth.getText());
+		int boxH = Integer.parseInt(boxHeight.getText());
+		int boxD = Integer.parseInt(boxDepth.getText());
+		int itemW = Integer.parseInt(itemWidth.getText());
+		int itemH = Integer.parseInt(itemHeight.getText());
+		int itemD = Integer.parseInt(itemWidth.getText());
+		int numItems = Integer.parseInt(numberItems.getText());
+		int boxDim = boxW*boxH*boxD;
+		int itemDim = numItems*itemW*itemH*itemD;
+		int boxFull = itemDim/boxDim;
+		int boxRem = itemDim%boxDim;
+		if(boxRem == 0) {
+			boxNeeded.setText("Boxes required: " + boxFull);
+		}
+		boxFull++;
+		boxNeeded.setText("Boxes required: " + boxFull);
+		}
 	}
 	public static void main(String[] args) {
 		new Box();
