@@ -2,20 +2,31 @@ package groupAssignment;
 
 public class BasketList {
 	String type;
+	String product;
 	int price;
 	int quantity;
 
 	public BasketList() {
 		this.type = "";
+		this.product = "";
 		this.price = 0;
 		this.quantity = 0;
 	}
 
-	public BasketList(String t, int p, int q) {
+	public BasketList(String t,String pr, int p, int q) {
 
 		this.type = t;
+		this.product=pr;
 		this.price = p;
 		this.quantity = q;
+	}
+
+	public String getProduct() {
+		return product;
+	}
+
+	public void setProduct(String product) {
+		this.product = product;
 	}
 
 	public String getType() {
@@ -43,3 +54,4 @@ public class BasketList {
 	}
 
 }
+
