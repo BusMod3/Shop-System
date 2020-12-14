@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import net.miginfocom.swing.*;
 
-public class MainWindow {
+public class MainWindow extends JFrame implements ActionListener {
 	private JFrame frame; 
 	private JPanel panel;
 	private JButton btnStock, btnBasket, btnCalculate, btnShipping;
@@ -30,20 +30,38 @@ public class MainWindow {
 	panel.add(btnCalculate, "wrap, pushx, growx");
 	panel.add(btnShipping, "pushx, growx");
 	
-	btnStock.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			StockGUI stockGui = new StockGUI();
-			stockGui.setTitle("Stock Management");
-			stockGui.setSize(600, 180);
-			stockGui.setVisible(true);
-		}
-	});
-	
+
+	btnStock.addActionListener(this);
+	btnBasket.addActionListener(this);
+	btnCalculate.addActionListener(this);
+	btnShipping.addActionListener(this);
 	
 	}
 	
 	public static void main(String args[]) {
 		new MainWindow();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==btnStock) {
+			AddItem addItem = new AddItem();
+			addItem.setVisible(true);
+		}
+		if(e.getSource()==btnBasket) {
+			Basket basket = new Basket();
+			basket.setVisible(true);
+		}
+		if(e.getSource()==btnCalculate) {
+			Calculate calculate = new Calculate();
+			calculate.setVisible(true);
+		}
+		if(e.getSource()==btnShipping) {
+			Box box = new Box();
+			box.setVisible(true);
+			
+		}
+		
 	}
 
 
